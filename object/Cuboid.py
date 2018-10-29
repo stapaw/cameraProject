@@ -4,11 +4,12 @@ from object.Point3D import Point3D
 
 
 class Cuboid:
-    def __init__(self, point3D, length: int, width: int, height: int):
+    def __init__(self, point3D, length: int, width: int, height: int, color):
         self.startingPoint = point3D
         self.length = length
         self.width = width
         self.height = height
+        self.color = color
 
     def get_points(self) -> list:
         startingPoint = Point3D(self.startingPoint.x, self.startingPoint.y, self.startingPoint.z)
@@ -49,3 +50,6 @@ class Cuboid:
                 (points[5], points[6]),
                 (points[6], points[7]),
                 (points[7], points[4])]
+
+    def getColor(self):
+        return self.color

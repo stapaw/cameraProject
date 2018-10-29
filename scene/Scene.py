@@ -14,13 +14,15 @@ class Scene:
         fs = []
         for figure in figures:
             linesPoints = figure.getPointsForLines(canvas)
-            for line in linesPoints:
-                fs.append(projection.project(line[0]))
-                fs.append(projection.project(line[1]))
+            for oneline in linesPoints:
+                line = (projection.project(oneline[0]), projection.project(oneline[1]), figure.getColor())
+                fs.append(line)
         return fs
 
     def __initScene__(self):
         figures = []
-        figures.append(Cuboid(point3D=Point3D(x=50, y=50, z=50.0), width=100, height=20, length=70))
-        figures.append(Cuboid(point3D=Point3D(x=170, y=50, z=50.0), width=100, height=20, length=70))
+        figures.append(Cuboid(point3D=Point3D(x=5, y=5, z=100), width=20, height=20, length=20, color="blue"))
+        figures.append(Cuboid(point3D=Point3D(x=5, y=-25, z=100), width=20, height=20, length=20, color="white"))
+        figures.append(Cuboid(point3D=Point3D(x=-25, y=5, z=100), width=20, height=20, length=20, color="red"))
+        figures.append(Cuboid(point3D=Point3D(x=-25, y=-25, z=100), width=20, height=20, length=20, color="green"))
         return figures
