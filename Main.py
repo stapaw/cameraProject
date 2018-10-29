@@ -14,9 +14,9 @@ class MyGUI:
         self.scene = scene
         self.projectionService = projectionService
 
-        master.title("A simple GUI")
+        master.title("Stanislaw Pawlak Grafika Komputerowa")
 
-        self.label = Label(master, text="Projection")
+        self.label = Label(master, text="Projekt 1")
         self.label.pack()
 
     def createScene(self):
@@ -53,19 +53,19 @@ class MyGUI:
         self.redraw()
 
     def moveRight(self, event):
-        self.projectionService.x_move -= MOVE_SIZE
-        self.redraw()
-
-    def moveLeft(self, event):
         self.projectionService.x_move += MOVE_SIZE
         self.redraw()
 
+    def moveLeft(self, event):
+        self.projectionService.x_move -= MOVE_SIZE
+        self.redraw()
+
     def moveUp(self, event):
-        self.projectionService.y_move += MOVE_SIZE
+        self.projectionService.y_move -= MOVE_SIZE
         self.redraw()
 
     def moveDown(self, event):
-        self.projectionService.y_move -= MOVE_SIZE
+        self.projectionService.y_move += MOVE_SIZE
         self.redraw()
 
     def moveForward(self, event):
