@@ -19,80 +19,80 @@ class MyGUI:
         self.label = Label(master, text="Projekt 1")
         self.label.pack()
 
-    def createScene(self):
+    def createScene(self, matrix, init):
         self.canvas.create_line(400, 0, 400, 800, fill="red")
         self.canvas.create_line(0, 300, 800, 300, fill="red")
-        scenePoints = self.scene.get_scene(self.canvas, self.projectionService)
+        scenePoints = self.scene.get_scene(self.canvas, self.projectionService, matrix, init)
         for i in range(0, len(scenePoints)):
-            self.canvas.create_line(scenePoints[i][0].item(0) + 400, scenePoints[i][0].item(1) + 300,
-                                    scenePoints[i][1].item(0) + 400, scenePoints[i][1].item(1) + 300,
+            self.canvas.create_line(scenePoints[i][0].x + 400, scenePoints[i][0].y + 300,
+                                    scenePoints[i][1].x + 400, scenePoints[i][1].y + 300,
                                     fill=scenePoints[i][2])
 
     def rotateRight(self, event):
-        self.projectionService.y_degree -= DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(-DEGREE_CHANGE)
+        matrix = self.projectionService.__getRyRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def rotateLeft(self, event):
-        self.projectionService.y_degree += DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(DEGREE_CHANGE)
+        matrix = self.projectionService.__getRyRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def rotateUp(self, event):
-        self.projectionService.x_degree -= DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(-DEGREE_CHANGE)
+        matrix = self.projectionService.__getRxRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def rotateDown(self, event):
-        self.projectionService.x_degree += DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(DEGREE_CHANGE)
+        matrix = self.projectionService.__getRxRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def rotateZ1(self, event):
-        self.projectionService.z_degree -= DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(-DEGREE_CHANGE)
+        matrix = self.projectionService.__getRzRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def rotateZ2(self, event):
-        self.projectionService.z_degree += DEGREE_CHANGE
-        self.redraw()
+        sin, cos = self.projectionService.__getRotationParams__(DEGREE_CHANGE)
+        matrix = self.projectionService.__getRzRotationMatrix__(sin, cos)
+        self.redraw(matrix)
 
     def moveRight(self, event):
-        self.projectionService.x_move += MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(MOVE_SIZE, 0, 0))
 
     def moveLeft(self, event):
-        self.projectionService.x_move -= MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(-MOVE_SIZE, 0, 0))
 
     def moveUp(self, event):
-        self.projectionService.y_move -= MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, -MOVE_SIZE, 0))
 
     def moveDown(self, event):
-        self.projectionService.y_move += MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, +MOVE_SIZE, 0))
 
     def moveForward(self, event):
-        self.projectionService.z_move += MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, 0, +MOVE_SIZE))
 
     def moveBackward(self, event):
-        self.projectionService.z_move -= MOVE_SIZE
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, 0, -MOVE_SIZE))
 
     def zoomIn(self, event):
         self.projectionService.d -= 1
         print(self.projectionService.d)
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, 0, 0))
 
     def zoomOut(self, event):
         self.projectionService.d += 1
-        self.redraw()
+        self.redraw(self.projectionService.getTranslationMatrix(0, 0, 0))
 
-    def redraw(self):
+    def redraw(self, matrix):
         self.canvas.delete("all")
-        self.createScene()
+        self.createScene(matrix, 0)
 
 
 root = Tk()
 ps = ProjectionService(100)
-scene = Scene()
+scene = Scene([])
 w = Canvas(root, width=800, height=600, bd=0, highlightthickness=0)
 gui = MyGUI(root, w, scene, ps)
 
@@ -113,5 +113,5 @@ w.bind('<q>', gui.zoomIn)
 w.bind('<w>', gui.zoomOut)
 w.focus_set()
 w.pack()
-gui.createScene()
+gui.createScene(gui.projectionService.getTranslationMatrix(0, 0, 0), 1)
 root.mainloop()
