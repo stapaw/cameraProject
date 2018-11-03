@@ -9,42 +9,9 @@ class ProjectionService:
     def __init__(self, d: int):
         self.d = d
 
-    def project(self, point3D: Point3D, move_matrix, rotation_matrix=[]):
-        # p = np.array([[point3D.x],
-        #               [point3D.y],
-        #               [point3D.z],
-        #               [1]])
+    def project(self, point3D: Point3D):
+        return self.normalize(point3D)
 
-        point3D = point3D.move(move_matrix)
-        point3D = point3D.rotate(move_matrix)
-        m = np.array([[point3D.x * self.d / point3D.z],
-                      [point3D.y * self.d / point3D.z],
-                      [self.d],
-                      [1]])
-
-        return Point3D(point3D.x * self.d / point3D.z,
-                       point3D.y * self.d / point3D.z,
-                       self.d)
-
-    def __rotateRx__(self, rotatedPoint: np.array) -> np.array:
-        sin, cos = self.__getRotationParams__(self.x_degree)
-        pointMatrix = rotatedPoint
-        return np.matmul(self.__getRxRotationMatrix__(sin, cos), pointMatrix)
-
-
-    def __rotateRy__(self, rotatedPoint: np.array) -> np.array:
-        sin, cos = self.__getRotationParams__(self.y_degree)
-        pointMatrix = rotatedPoint
-        # res = self.__getRyRotationMatrix__(sin, cos) * pointMatrix
-        res = np.matmul(self.__getRyRotationMatrix__(sin, cos), pointMatrix)
-        return res
-
-    def __rotateRz__(self, rotatedPoint: np.array) -> np.array:
-        sin, cos = self.__getRotationParams__(self.z_degree)
-        pointMatrix = rotatedPoint
-        # res = self.__getRzRotationMatrix__(sin, cos) * pointMatrix
-        res = np.matmul(self.__getRzRotationMatrix__(sin, cos), pointMatrix)
-        return res
 
     def __getRxRotationMatrix__(self, sin, cos) -> np.array:
         return np.array([[1, 0, 0, 0],
@@ -73,3 +40,8 @@ class ProjectionService:
                          [0, 1, 0, y],
                          [0, 0, 1, z],
                          [0, 0, 0, 1]])
+
+    def normalize(self, point: Point3D) -> Point3D:
+        return Point3D(point.x * self.d / point.z,
+                       point.y * self.d / point.z,
+                       self.d)

@@ -3,7 +3,6 @@ from tkinter import *
 import numpy as np
 
 from object.Point3D import Point3D
-from scene import ProjectionService
 
 
 class Cuboid:
@@ -29,9 +28,9 @@ class Cuboid:
     def set_points(self, points):
         self.points = points
 
-    def update_points(self, projection: ProjectionService, matrix: np.array):
+    def update_points(self, matrix: np.array):
         for i in range(0, len(self.points)):
-            self.points[i] = projection.project(self.points[i], matrix)
+            self.points[i].move(matrix)
         print(self.points[0].x, self.points[0].y, self.points[0].z)
         print(self.points[1].x, self.points[1].y, self.points[1].z)
         print("next:")

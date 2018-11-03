@@ -16,10 +16,10 @@ class Scene:
                 figure.init_points()
         fs = []
         for figure in self.figures:
-            figure.update_points(projection, matrix)
+            figure.update_points(matrix)
             linesPoints = figure.getPointsForLines(canvas)
             for oneline in linesPoints:
-                line = (oneline[0], oneline[1], figure.getColor())
+                line = (projection.project(oneline[0]), projection.project(oneline[1]), figure.getColor())
                 fs.append(line)
         print()
         return fs

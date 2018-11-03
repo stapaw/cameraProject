@@ -7,19 +7,16 @@ class Point3D:
         self.z = z
 
     def rotate(self, matrix):
-        pointMatrix = np.array([[self.x],
-                                [self.y],
-                                [self.z],
-                                [1]])
-        point = np.matmul(matrix, pointMatrix)
-        return Point3D(point.item(0) / point.item(3), point.item(1) / point.item(3),
-                       point.item(2) / point.item(3))
+        return np.matmul(matrix, self.__get_point_matrix())
 
     def move(self, matrix):
-        pointMatrix = np.array([[self.x],
-                                [self.y],
-                                [self.z],
-                                [1]])
-        point = np.matmul(matrix, pointMatrix)
-        return Point3D(point.item(0) / point.item(3), point.item(1) / point.item(3),
-                       point.item(2) / point.item(3))
+        moved = np.matmul(matrix, self.__get_point_matrix())
+        self.x = moved.item(0)
+        self.y = moved.item(1)
+        self.z = moved.item(2)
+
+    def __get_point_matrix(self):
+        return np.array([[self.x],
+                         [self.y],
+                         [self.z],
+                         [1]])

@@ -59,16 +59,16 @@ class MyGUI:
         self.redraw(matrix)
 
     def moveRight(self, event):
-        self.redraw(self.projectionService.getTranslationMatrix(MOVE_SIZE, 0, 0))
-
-    def moveLeft(self, event):
         self.redraw(self.projectionService.getTranslationMatrix(-MOVE_SIZE, 0, 0))
 
+    def moveLeft(self, event):
+        self.redraw(self.projectionService.getTranslationMatrix(MOVE_SIZE, 0, 0))
+
     def moveUp(self, event):
-        self.redraw(self.projectionService.getTranslationMatrix(0, -MOVE_SIZE, 0))
+        self.redraw(self.projectionService.getTranslationMatrix(0, MOVE_SIZE, 0))
 
     def moveDown(self, event):
-        self.redraw(self.projectionService.getTranslationMatrix(0, +MOVE_SIZE, 0))
+        self.redraw(self.projectionService.getTranslationMatrix(0, -MOVE_SIZE, 0))
 
     def moveForward(self, event):
         self.redraw(self.projectionService.getTranslationMatrix(0, 0, +MOVE_SIZE))
